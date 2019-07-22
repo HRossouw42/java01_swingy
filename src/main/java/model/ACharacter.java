@@ -18,7 +18,7 @@ public abstract class ACharacter extends ADoodad {
     protected int xp = 0;
     protected int attack = 0;
     protected int defence = 0;
-    protected int speed = 0;
+    protected int strength = 0;
 
 
     protected ACharacter(String name, int level, int coordX, int coordY) {
@@ -35,17 +35,17 @@ public abstract class ACharacter extends ADoodad {
 
     public abstract int getBaseDefence();
 
-    public abstract int getBaseSpeed();
+    public abstract int getBaseStrength();
 
-    public abstract int getBaseGrowthHp();
+    public abstract int getGrowthHp();
 
-    public abstract int getBaseGrowthXp();
+    public abstract int getGrowthXp();
 
-    public abstract int getBaseGrowthAttack();
+    public abstract int getGrowthAttack();
 
-    public abstract int getBaseGrowthDefence();
+    public abstract int getGrowthDefence();
 
-    public abstract int getBaseGrowthSpeed();
+    public abstract int getGrowthStrength();
 
 
     protected void levelUp(int newLevel) {
@@ -54,12 +54,12 @@ public abstract class ACharacter extends ADoodad {
 
         // reset to max hp
         hp = maxHp;
-        maxHp = getBaseHp() + getBaseGrowthHp() * newLevel;
+        maxHp = getBaseHp() + getGrowthHp() * newLevel;
 
-        xp = getBaseXp() + getBaseGrowthXp() * newLevel;
-        attack = getBaseAttack() + getBaseGrowthAttack() * newLevel;
-        defence = getBaseDefence() + getBaseGrowthDefence() * newLevel;
-        speed = getBaseSpeed() + getBaseGrowthSpeed() * newLevel;
+        xp = getBaseXp() + getGrowthXp() * newLevel;
+        attack = getBaseAttack() + getGrowthAttack() * newLevel;
+        defence = getBaseDefence() + getGrowthDefence() * newLevel;
+        strength = getBaseStrength() + getGrowthStrength() * newLevel;
 
         level = newLevel;
     }
