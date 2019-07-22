@@ -3,6 +3,8 @@ package model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Random;
+
 @Getter
 @Setter
 
@@ -67,12 +69,19 @@ public abstract class ACharacter extends ADoodad {
         levelUp(level + 1);
     }
 
-    public void setPosition(int coordX, int coordY){
+    // dice
+    public int rollD20() {
+        Random r = new Random();
+        //TODO see if this returns 20 or 21
+        return (r.nextInt(20) + 1);
+    }
+
+    public void setPosition(int coordX, int coordY) {
         this.coordX = coordX;
         this.coordY = coordY;
     }
 
-    public void fullHeal(){
+    public void fullHeal() {
         hp = maxHp;
     }
 

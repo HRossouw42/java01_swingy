@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 // first lombok, generates getter and setter methods
-@Getter @Setter
+@Getter
+@Setter
 
 /*
 abstract keyword is used to create a abstract class and method.
@@ -33,7 +34,7 @@ public abstract class ADoodad {
     }
 
     long getUniqueId() {
-        return id ++;
+        return id++;
     }
 
     //TODO Gui variables and getters
