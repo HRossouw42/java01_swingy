@@ -21,7 +21,7 @@ public abstract class AMonster extends ACharacter {
 
     @Override
     public int getBaseHp() {
-        return 10;
+        return 5;
     }
 
     @Override
