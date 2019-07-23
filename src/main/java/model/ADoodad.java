@@ -16,8 +16,12 @@ An abstract class is mostly used to provide a base for subclasses to extend
 public abstract class ADoodad {
     long id = 0;
 
+    long getUniqueId() {
+        return id++;
+    }
+
     // does image fill whole block
-    public boolean fullSize = true;
+    //public boolean fullSize = true;
 
     // protected is a version of public restricted only to subclasses
     protected String name = "";
@@ -33,9 +37,6 @@ public abstract class ADoodad {
         this.id = getUniqueId();
     }
 
-    long getUniqueId() {
-        return id++;
-    }
 
     //TODO Gui variables and getters
 
