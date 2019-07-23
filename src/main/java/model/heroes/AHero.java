@@ -8,45 +8,18 @@ import model.ACharacter;
 @Setter
 public abstract class AHero extends ACharacter {
 
-    //xp variables
-    //the base xp is kept in ACharacter
-    protected int xpTolevel;
-    protected int xpCurrent;
-    protected int xpTemp;
-
-    public boolean getXP(int xpNew) {
-        xp = xp + xpNew;
-
-        if (xp >= xpTolevel) {
-            xpTemp = xp - xpTolevel;
-            this.levelUp();
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    protected void levelUp(int newLevel) {
-        super.levelUp(newLevel);
-
-        xpTolevel = level * 1000;
-        xp = xpTemp;
-
-        //TODO item stats & xp balancing
-    }
-
-
+    //constructor
     protected AHero(String name, int level) {
         //coordX, coordY at start are 0
         super(name, level, 0, 0);
     }
 
-    //default
+    //default constructor
     AHero() {
         this("Unknown", 1);
     }
 
-    //hero stats
+    //hero stats getters
     @Override
     public int getBaseHp() {
         return 10;
@@ -100,14 +73,51 @@ public abstract class AHero extends ACharacter {
     public String getStatString() {
         String str;
         str = "MaxHP :" + getGrowthHp();
-        str = str + "Attack :" +getGrowthAttack();
+        str = str + "Attack :" + getGrowthAttack();
         str = str + "Defence :" + getGrowthDefence();
         str = str + "Strength :" + getGrowthStrength();
         return str;
     }
 
+    //fetching from the individual hero classes
+    public abstract String getClassDescription();
+    public abstract HeroAbility getAbility();
+
+    public enum HeroAbility {
+        None,
+        SecondWind
+    }
+
+    //xp variables
+    //the base xp is kept in ACharacter
+    protected int xpTolevel;
+    protected int xpCurrent;
+    protected int xpTemp;
+
+    public boolean getXP(int xpNew) {
+        xp = xp + xpNew;
+
+        if (xp >= xpTolevel) {
+            xpTemp = xp - xpTolevel;
+            this.levelUp();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void levelUp(int newLevel) {
+        super.levelUp(newLevel);
+
+        xpTolevel = level * 1000;
+        xp = xpTemp;
+
+        //TODO item stats & xp balancing
+    }
+
+
     //abilities common to all heroes
-    public boolean rest(int healing){
+    public boolean rest(int healing) {
         if (hp == 0 || hp == maxHp)
             return false;
 
@@ -117,6 +127,8 @@ public abstract class AHero extends ACharacter {
         }
         return true;
     }
+
+    //TODO roll to attack
 
     //TODO add items
 

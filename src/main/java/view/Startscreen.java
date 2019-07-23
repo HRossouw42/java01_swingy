@@ -35,7 +35,7 @@ public class Startscreen extends JPanel{
         // https://tutorials.tinyappco.com/Java/ComboBoxes
         // TODO: iterate through classes and add them + change on selection
         startClassListBox = new JComboBox();
-        startClassListBox.addItem("Warrior");
+        startClassListBox.addItem("Fighter");
         startClassListBox.addItem("Rogue");
         startClassListBox.addItem("Cleric");
         startClassListBox.addItem("Wizard");
