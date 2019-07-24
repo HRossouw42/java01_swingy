@@ -1,7 +1,7 @@
 package model.items.weapons;
 
 public class Sword extends AWeapon {
-    Sword(int level){
+    public Sword(int level){
         super("Sword", 1);
     }
 

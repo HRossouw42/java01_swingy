@@ -24,4 +24,6 @@ public class AWeapon extends AItem {
     public int getGrowthAttack() {
         return 1;
     }
+
+    //TODO have weapons show +damage not attack
 }
