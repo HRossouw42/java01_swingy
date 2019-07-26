@@ -48,6 +48,27 @@ public abstract class ACharacter extends ADoodad {
     public abstract int getGrowthStrength();
 
 
+    //TODO check if HP values calculated correctly
+    public int getHp() {
+        return hp;
+    }
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public int getAttack(){
+        return attack;
+    }
+
+    public int getDefence() {
+        return defence;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
     protected void levelUp(int newLevel) {
         if (newLevel <= 0)
             return;

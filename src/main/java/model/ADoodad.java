@@ -37,7 +37,17 @@ public abstract class ADoodad {
         this.id = getUniqueId();
     }
 
+    public String getName() {
+        return name;
+    }
 
     //TODO Gui variables and getters
 
+    public int getCoordX() {
+        return coordX;
+    }
+
+    public int getCoordY() {
+        return coordY;
+    }
 }

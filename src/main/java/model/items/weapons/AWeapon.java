@@ -17,7 +17,7 @@ public class AWeapon extends AItem {
     }
 
     public String getItemBonuses() {
-        return ("Attack +" + attack);
+        return ("ATK +" + attack);
     }
 
     @Override

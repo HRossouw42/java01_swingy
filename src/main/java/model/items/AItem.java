@@ -62,4 +62,19 @@ public abstract class AItem {
         return 0;
     }
 
+    public int getHp() {
+        return hp;
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public int getDefence() {
+        return defence;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

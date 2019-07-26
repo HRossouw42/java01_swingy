@@ -3,6 +3,7 @@ package model.heroes;
 import lombok.Getter;
 import lombok.Setter;
 import model.ACharacter;
+import model.items.weapons.AWeapon;
 
 @Getter
 @Setter
@@ -12,6 +13,7 @@ public abstract class AHero extends ACharacter {
     protected AHero(String name, int level) {
         //coordX, coordY at start are 0
         super(name, level, 0, 0);
+        hp = getMaxHp();
     }
 
     //default constructor
@@ -20,6 +22,14 @@ public abstract class AHero extends ACharacter {
     }
 
     //hero stats getters
+    public String getName() {
+        return name;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
     @Override
     public int getBaseHp() {
         return 10;
@@ -90,6 +100,7 @@ public abstract class AHero extends ACharacter {
 
     //xp variables
     //the base xp is kept in ACharacter
+    @Getter
     protected int xpTolevel;
     protected int xpCurrent;
     protected int xpTemp;
@@ -103,6 +114,14 @@ public abstract class AHero extends ACharacter {
             return true;
         }
         return false;
+    }
+
+    public int getXpTolevel(){
+        return xpTolevel;
+    }
+
+    public int getXpCurrent() {
+        return xpCurrent;
     }
 
     @Override
@@ -130,6 +149,22 @@ public abstract class AHero extends ACharacter {
 
     //TODO roll to attack
 
-    //TODO add items
+    //Items
+    //TODO helms defence
+    protected AWeapon weapon = null;
+
+    public AWeapon getWeapon() {
+        return weapon;
+    }
+
+    public void equipWeapon(AWeapon tempWeapon) {
+        if (weapon != null){
+            //replacing attack with the new weapon's attack then apply afterwards
+            attack = attack - weapon.getAttack();
+        }
+
+        weapon = tempWeapon;
+        attack = attack + weapon.getAttack();
+    }
 
 }
