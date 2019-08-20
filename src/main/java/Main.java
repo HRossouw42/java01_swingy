@@ -31,7 +31,10 @@ public class Main {
         fighter.equipWeapon(sword);
 
         System.out.println("\nConsole terminal thing\n");
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX\n");
         CHero console = new CHero(fighter);
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX");
+
 
         return;
     }
