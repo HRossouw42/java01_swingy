@@ -32,7 +32,7 @@ public class CHero {
         if (hero.getWeapon() != null) {
             str += hero.getWeapon().getName() + "-> " + hero.getWeapon().getItemBonuses() + "\n";
         }
-        else str +="No weapon equipped" + "\n";
+        else str +="Unarmed" + "\n";
 
         System.out.println(str);
 
