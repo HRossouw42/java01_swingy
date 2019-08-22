@@ -82,6 +82,12 @@ public abstract class AMonster extends ACharacter {
         return str;
     }
 
+    //TODO balance XP
+    public int getXp(){
+        int xp = getBaseXp() + getGrowthXp() * level;
+        return xp;
+    }
+
     @Override
     public void setPosition(int coordX, int coordY) {
         this.coordX = coordX;

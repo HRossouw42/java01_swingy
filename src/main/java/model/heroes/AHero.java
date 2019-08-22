@@ -105,7 +105,7 @@ public abstract class AHero extends ACharacter {
     protected int xpCurrent;
     protected int xpTemp;
 
-    public boolean getXP(int xpNew) {
+    public boolean getXp(int xpNew) {
         xp = xp + xpNew;
 
         if (xp >= xpTolevel) {
