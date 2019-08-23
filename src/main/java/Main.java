@@ -2,10 +2,8 @@ import lombok.Getter;
 import model.heroes.Fighter;
 import model.items.weapons.Sword;
 import model.monsters.goblins.Goblin;
-import view.Startscreen;
-import view.console.CHero;
+import view.console.CViewHero;
 
-import javax.swing.*;
 @Getter
 public class Main {
 
@@ -32,7 +30,8 @@ public class Main {
 
         System.out.println("\nConsole terminal thing\n");
         System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX\n");
-        CHero console = new CHero(fighter);
+        CViewHero console = new CViewHero(fighter);
+
         System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 

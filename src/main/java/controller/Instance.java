@@ -1,13 +1,25 @@
 package controller;
 
 import model.heroes.AHero;
-import view.console.CWindow;
+import view.console.CViewWindow;
 
 import java.util.Random;
+import lombok.Getter;
 
-public class UserInterface {
+/*
+Instance is a class that which state persists switching of levels, game mode switches etc.
+Where classes like Game or HeroSelect are being reset and any data stored in them is deleted and put to defaults again.
+Any data that you want to keep beyond levels and matches, for example "what player did in specific moment so you can have consequence on other level" should be placed here.
+ */
+
+public class Instance {
     //main running instance
-    private static UserInterface instance = new UserInterface();
+    @Getter
+    private static Instance instance = new Instance();
+
+    public static Instance getInstance() {
+        return instance;
+    }
 
     //main variables
     AHero hero = null;
@@ -20,13 +32,13 @@ public class UserInterface {
     private Game game = null;
 
     //Ui
-    CWindow cWindow = null;
+    CViewWindow CViewWindow = null;
     boolean onlyConsole = false;
 
-    private UserInterface() {
+    private Instance() {
     }
 
-    public void startGame(final String [] args) {
+    public void initialiseGame(final String [] args) {
 //        for (int i = 0; i < args.length; i++) {
 //
 //            if (args[i].equals("console")) {
@@ -45,10 +57,18 @@ public class UserInterface {
 
         //TODO only Console available at the moment
         uiToLoad = 1;
-        cWindow = new CWindow();
+        CViewWindow = new CViewWindow();
         //TODO load select screen
+    }
 
+    public void startGame(AHero hero){
+        uiToLoad = 1;
+        this.hero = hero;
 
+        if (CViewWindow != null){
+            //CViewWindow.startMainPanel(hero);
+            //uiReadytoPlay
+        }
     }
 
 }

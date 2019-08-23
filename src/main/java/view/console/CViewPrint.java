@@ -1,8 +1,8 @@
 package view.console;
 
-public class CPrint {
+public class CViewPrint {
 
-    CPrint(){
+    CViewPrint(){
 
     }
 

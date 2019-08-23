@@ -2,13 +2,13 @@ package view.console;
 
 import model.heroes.AHero;
 
-public class CHero {
+public class CViewHero {
 
     //holding place for the hero
     protected AHero hero = null;
     
     //constructor needs a hero then runs the main update method
-    public CHero(AHero hero) {
+    public CViewHero(AHero hero) {
         this.hero = hero;
         print();
     }
