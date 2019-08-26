@@ -3,6 +3,7 @@ import lombok.Getter;
 import model.heroes.Fighter;
 import model.items.weapons.Sword;
 import model.monsters.goblins.Goblin;
+import model.monsters.goblins.Hobgoblin;
 import view.console.CViewHero;
 import view.console.CViewMain;
 
@@ -21,8 +22,10 @@ public class Main {
         Goblin goblin = new Goblin(1, 0, 0, 1);
         System.out.println("A new foe appears");
         System.out.println(goblin.getName());
+        Hobgoblin hobgoblin = new Hobgoblin(1, 0, 0,100);
+        System.out.println(hobgoblin.getName());
 
-        System.out.println(goblin.getStatString());
+//        System.out.println(goblin.getStatString());
 
         Sword sword = new Sword(1);
 
@@ -39,6 +42,7 @@ public class Main {
         Game game = new Game(fighter);
         game.combatSimulate(goblin, true);
         game.combatSimulate(goblin, false);
+        game.combatSimulate(hobgoblin, false);
 
 
 
