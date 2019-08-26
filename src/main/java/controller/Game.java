@@ -37,12 +37,12 @@ public class Game {
     int preCombatX;
     int preCombatY;
 
-    Game(AHero hero){
+    public Game(AHero hero){
         this.hero = hero;
     }
 
     //main combat logic
-    private boolean combatSimulate(AMonster monster, boolean heroStarts){
+    public boolean combatSimulate(AMonster monster, boolean heroStarts){
         didFight = true;
         System.out.println("A " + monster.getName() + " blocks your path!");
         boolean combatEnd = false;

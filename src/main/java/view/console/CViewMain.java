@@ -6,7 +6,7 @@ public class CViewMain {
     public CViewHero CViewHero = null;
     public CViewPrint CViewPrint = null;
 
-    CViewMain(AHero hero){
+    public CViewMain(AHero hero){
         CViewHero = new CViewHero(hero);
         CViewPrint = new CViewPrint();
     }

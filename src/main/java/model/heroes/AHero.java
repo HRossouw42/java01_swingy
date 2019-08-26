@@ -100,7 +100,7 @@ public abstract class AHero extends ACharacter {
 
     //xp variables
     //the base xp is kept in ACharacter
-    @Getter
+    //@Getter
     protected int xpTolevel;
     protected int xpCurrent;
     protected int xpTemp;

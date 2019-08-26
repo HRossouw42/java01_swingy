@@ -14,7 +14,7 @@ Any data that you want to keep beyond levels and matches, for example "what play
 
 public class Instance {
     //main running instance
-    @Getter
+    //@Getter
     private static Instance instance = new Instance();
 
     public static Instance getInstance() {

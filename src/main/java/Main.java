@@ -1,8 +1,10 @@
+import controller.Game;
 import lombok.Getter;
 import model.heroes.Fighter;
 import model.items.weapons.Sword;
 import model.monsters.goblins.Goblin;
 import view.console.CViewHero;
+import view.console.CViewMain;
 
 @Getter
 public class Main {
@@ -31,6 +33,14 @@ public class Main {
         System.out.println("\nConsole terminal thing\n");
         System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX\n");
         CViewHero console = new CViewHero(fighter);
+//      CViewMain viewMain = new CViewMain(fighter);
+
+        System.out.println("Simulate Combat");
+        Game game = new Game(fighter);
+        game.combatSimulate(goblin, true);
+        game.combatSimulate(goblin, false);
+
+
 
         System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
