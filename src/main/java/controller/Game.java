@@ -59,7 +59,7 @@ public class Game {
             //TODO add critical hits
             //TODO show rolls and attack damage mitigation
 
-            str = attacker.getName() + "attacks";
+            str = attacker.getName() + " attacks!\n";
 
             defender.getDamaged(damage);
             if (defender.getHp() == 0){
