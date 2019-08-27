@@ -28,8 +28,12 @@ public class Instance {
     public Random random = new Random();
 
     //other controllers
-    private HeroSelect heroSelect = null;
-    private Game game = null;
+    @Getter private HeroSelect heroSelect = null;
+    @Getter private Game game = null;
+
+    public Game getGame() {
+        return game;
+    }
 
     //Ui
     CViewWindow CViewWindow = null;

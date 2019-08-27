@@ -1,5 +1,6 @@
 package controller;
 
+import lombok.Getter;
 import model.ACharacter;
 import model.ADoodad;
 import model.heroes.AHero;
@@ -8,6 +9,9 @@ import model.monsters.AMonster;
 import java.util.ArrayList;
 
 public class Game {
+
+    //get main running instance
+    private Instance instance = Instance.getInstance();
 
     AHero hero;
     ADoodad elem; //holds an element on the map
@@ -28,7 +32,20 @@ public class Game {
         Dead
     }
 
+    @Getter
     GameState gameState;
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    //directions
+    public static String NORTH = "NORTH";
+    public static String EAST = "EAST";
+    public static String SOUTH = "SOUTH";
+    public static String WEST = "WEST";
+    public static String[] directionsArray = new String[]{NORTH, EAST, SOUTH, WEST};
+
 
     boolean didFight = false; //did you fight this turn
     // final keyword: https://www.geeksforgeeks.org/final-keyword-java/
