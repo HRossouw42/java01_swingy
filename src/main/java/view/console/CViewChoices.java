@@ -4,12 +4,12 @@ import controller.Game;
 import controller.Instance;
 import lombok.Getter;
 
-public class CViewChoices {
+public class CViewChoices extends Thread{
 
     //instance
     Instance instance = Instance.getInstance();
 
-    @Getter boolean await = false;
+    @Getter boolean awaitInput = false;
     boolean inputConsole = true;
 
     boolean selectHero = true;
@@ -22,9 +22,7 @@ public class CViewChoices {
 //     A thread is a thread of execution in a program.
 //     The Java Virtual Machine allows an application to have multiple threads of execution running concurrently.
 //     in this case we can run the choicepanel concurrently with other functions
-
     Thread choiceThread = null;
-
 
     CViewChoices() {
         //TODO Make thread
@@ -32,7 +30,7 @@ public class CViewChoices {
         //choiceThread.start();
     }
 
-
+    //printing function
     public void printLegend() {
         String string = "";
 
@@ -91,5 +89,78 @@ public class CViewChoices {
         }
 
     }
+
+    // ---------------------------- \\
+    // game's console methods
+    public void mainGameStarted() {
+        selectHero = false;
+        selectionLabels = null;
+    }
+
+    public void startDirectionInput() {
+        printLegend();
+        awaitInput = true;
+        inputConsole = false;
+    }
+
+    public void stopDirectionInput(int input) {
+        awaitInput = false;
+        if (!inputConsole){
+            System.out.println(input + 1);
+        }
+        System.out.println("---");
+    }
+
+    public void startCombatInput() {
+        printLegend();
+        awaitInput = true;
+        inputConsole = false;
+    }
+
+    public void stopFightInput(String input) {
+        awaitInput = false;
+        if (!inputConsole){
+            System.out.println(input);
+        }
+        System.out.println("---");
+    }
+
+    public void startItemInput() {
+        printLegend();
+        awaitInput = true;
+        inputConsole = false;
+    }
+
+    public void stopItemInput(String input) {
+        awaitInput = false;
+        if (!inputConsole){
+            System.out.println(input);
+        }
+        System.out.println("---");
+    }
+
+    public void startDeathInput() {
+        printLegend();
+        awaitInput = true;
+        inputConsole = false;
+    }
+
+    public void stopDeathInput(String input) {
+        awaitInput = false;
+        if (!inputConsole){
+            System.out.println(input);
+        }
+        System.out.println("---");
+    }
+
+    public void dispose() {
+        choiceThread.interrupt();
+        if(!inputConsole){
+            System.out.println("0");
+        }
+        System.out.println("---");
+    }
+    // ---------------------------- \\
+
 
 }
