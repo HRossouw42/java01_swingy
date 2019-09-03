@@ -17,8 +17,11 @@ public class CViewWindow {
 
     public void startMainWindow(AHero hero){
         cViewMain = new CViewMain(hero);
-        //CViewMain.
-        //TODO add the choices panel
+        cViewChoices.mainGameStarted();
+    }
+
+    public void dump() {
+        cViewChoices.dump();
     }
 
 

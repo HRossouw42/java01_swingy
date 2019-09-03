@@ -1,5 +1,6 @@
 package controller;
 
+import model.ADoodad;
 import model.heroes.AHero;
 import view.console.CViewWindow;
 
@@ -36,43 +37,106 @@ public class Instance {
     }
 
     //Ui
-    CViewWindow CViewWindow = null;
+    CViewWindow cViewWindow = null;
     boolean onlyConsole = false;
 
     private Instance() {
     }
 
-    public void initialiseGame(final String [] args) {
-//        for (int i = 0; i < args.length; i++) {
-//
-//            if (args[i].equals("console")) {
-//                //error check if console mode has been activated already
-//                if (onlyConsole = true) {
-//                    System.out.println("You're already in console mode!");
-//                    return;
-//                } else {
-//                    onlyConsole = true;
-//                }
-//            } else {
-//                System.out.println("Unknown argument: (" + args[i] + " ), only option available is 'console'");
-//                return;
-//            }
-//        }
 
-        //TODO only Console available at the moment
+    public void setupInstance(final String [] args) {
+        //only Console available at the moment
+        onlyConsole = true;
         uiToLoad = 1;
-        CViewWindow = new CViewWindow();
-        //TODO load select screen
+        cViewWindow = new CViewWindow();
+        uiChoiceReady();
     }
 
-    public void startGame(AHero hero){
+//    UI controllers
+//    TODO feat make them work with GUI as well
+    public void startGameInstance(AHero hero){
         uiToLoad = 1;
         this.hero = hero;
+        AHero currentHero = hero;
 
-        if (CViewWindow != null){
-            //CViewWindow.startMainPanel(hero);
-            //uiReadytoPlay
+        if (cViewWindow != null){
+            cViewWindow.startMainWindow(hero);
+            uiGameReady();
         }
+    }
+
+    private void uiGameReady() {
+        uiToLoad--;
+        System.out.println("UI left to load = " + uiToLoad);
+        if (uiToLoad == 0) {
+            game = new Game(hero);
+            game.startGame();
+        }
+    }
+
+    private void uiChoiceReady(){
+        uiToLoad--;
+        System.out.println("UI left to load = " + uiToLoad);
+        if (uiToLoad == 0) {
+            heroSelect = new HeroSelect(cViewWindow);
+//        TODO load select screen
+            System.out.println("TODO LOAD SELECT SCREEN");
+            heroSelect.startHeroSelect();
+        }
+    }
+
+    public void startCombatChoice() {
+        System.out.println("Fight or Attempt to Run?(50%)");
+        if (cViewWindow != null)
+            cViewWindow.cViewChoices.startCombatInput();
+    }
+
+    public void stopCombatChoice(String input) {
+        if (cViewWindow != null)
+            cViewWindow.cViewChoices.stopFightInput(input);
+    }
+
+    public void startDeathChoice() {
+        if (cViewWindow != null)
+            cViewWindow.cViewChoices.startDeathInput();
+    }
+
+    public void restartGame(String input) {
+        if (cViewWindow != null)
+            cViewWindow.cViewChoices.stopDeathInput(input);
+        System.out.println("RESTARTING");
+        game.startGame();
+    }
+
+    public void gameOver(){
+        if (cViewWindow != null){
+            cViewWindow.dump();
+        }
+    }
+
+    public void startMapChoice() {
+        if (cViewWindow != null)
+            cViewWindow.cViewChoices.startDirectionInput();
+    }
+
+    public void stopMapChoice(int directionInt) {
+        if (cViewWindow != null)
+            cViewWindow.cViewChoices.stopDirectionInput(directionInt);
+    }
+
+//    UI controllers to reprint the map & hero when something changes
+    public void refreshMap(ADoodad[][] aDoodads) {
+        //TODO refreshes gui
+    }
+
+    public void refreshHero() {
+        if (cViewWindow != null)
+            cViewWindow.cViewMain.CViewHero.print();
+    }
+
+    //MAIN
+    public static void  main(String[] args) {
+        Instance.getInstance().setupInstance(args);
     }
 
 }

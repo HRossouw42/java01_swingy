@@ -11,21 +11,27 @@ public class HeroSelect {
     //ArrayList(Collection<? extends E> c)
     //This constructor is used to create a list containing the elements of the specified collection.
     static ArrayList<Class<? extends AHero>> classList;
+    String[] classListLegend = null;
+
     static {
         classList = new ArrayList<Class<? extends AHero>>();
         classList.add(Fighter.class);
     }
-
     Instance instance = Instance.getInstance();
     AHero hero = null;
     //TODO list of saved heroes
     ArrayList<AHero> savedCharacters;
-    CViewWindow CViewWindow = null;
+    String[] savedCharactersLegend = null;
+
 
     boolean createNewHero = true;
+    int index;
+    int tempIndex;
 
-    HeroSelect() {
+    CViewWindow cViewWindow = null;
 
+    HeroSelect(CViewWindow cViewWindow) {
+        this.cViewWindow = cViewWindow;
     }
 
     private boolean createHero(String name){
@@ -33,6 +39,7 @@ public class HeroSelect {
             try {
                 //TODO move to array with hero classes
                 hero = new Fighter(name, 1);
+                System.out.println(hero.getName());
             }
             catch (Exception e) {
                 System.out.println(e);
@@ -51,11 +58,59 @@ public class HeroSelect {
             return;
         }
 
-        if (CViewWindow != null) {
+        if (cViewWindow != null) {
             System.out.println("\nJourney downwards mighty " + name + "!");
         }
-        instance.startGame(hero);
+        instance.startGameInstance(hero);
     }
+
+    public void startHeroSelect() {
+        index = 0;
+        createNewHero = true;
+
+
+        try {
+            hero = classList.get(index).getConstructor(String.class, int.class).newInstance(classList.get(index).getSimpleName(), 1);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+        classListLegend = new String[classList.size()];
+        for (int i = 0; i < classListLegend.length; i++) {
+            classListLegend[i] = classList.get(i).getName();
+        }
+
+        if (cViewWindow != null) {
+            cViewWindow.startChoiceWindow();
+
+            System.out.println("Show choice window plox");
+        }
+
+        //createNewHero = true;
+        continueHeroSelect();
+    }
+
+    public void continueHeroSelect() {
+        createNewHero = !createNewHero; //reset
+        tempIndex = index;
+        index = 0;
+        String name = (createNewHero) ? classListLegend[index] : "";
+        if (!createHero(name)) {
+            createNewHero = !createNewHero;
+            index = tempIndex;
+            return;
+        }
+
+        final String[] combinedLabels = classListLegend;
+        final boolean isCreateNewHero = createNewHero;
+        final AHero selectedHero = hero;
+
+        if (cViewWindow != null){
+            cViewWindow.cViewChoices.refreshSelection(combinedLabels, createNewHero, hero);
+
+        }
+    }
+
 
 
 }

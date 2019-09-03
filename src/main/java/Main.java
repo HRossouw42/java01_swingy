@@ -41,10 +41,8 @@ public class Main {
         System.out.println("Simulate Combat");
         Game game = new Game(fighter);
         game.combatSimulate(goblin, true);
-        game.combatSimulate(goblin, false);
+//        game.combatSimulate(goblin, false);
         game.combatSimulate(hobgoblin, false);
-
-
 
         System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 

@@ -5,6 +5,7 @@ import model.ACharacter;
 import model.ADoodad;
 import model.heroes.AHero;
 import model.monsters.AMonster;
+import model.monsters.goblins.Goblin;
 
 import java.util.ArrayList;
 
@@ -14,13 +15,17 @@ public class Game {
     private Instance instance = Instance.getInstance();
 
     AHero hero;
-    ADoodad elem; //holds an element on the map
+
+    // ~~ map variables ~~
+    // thought process: by making everything in the game a 'doodad' object, you can hold all info in an array. Blame the warcraft 3 editor for the terminology
+    ADoodad aDoodad; //holds a temp doodad on the map
+    ADoodad[][] mapDoodads; //holds all other doodads
 
     int mapSize;
-    int mapXp;
+    int mapXp; //xp granted on map completion
+
 
     // ~~ variables for gamestate ~~
-
     //An enum is a special "class" that represents a group of constants (unchangeable variables)
     //here used to make sure I know what game state it currently is
     public enum GameState {
@@ -46,16 +51,41 @@ public class Game {
     public static String WEST = "WEST";
     public static String[] directionsArray = new String[]{NORTH, EAST, SOUTH, WEST};
 
+//    ~~ combat variables ~~
+    ArrayList<AMonster> monstersList = new ArrayList<AMonster>(); //holds all monsters
 
     boolean didFight = false; //did you fight this turn
-    // final keyword: https://www.geeksforgeeks.org/final-keyword-java/
-
-    ArrayList<AMonster> monstersList = new ArrayList<AMonster>();
     int preCombatX;
     int preCombatY;
 
     public Game(AHero hero){
         this.hero = hero;
+    }
+
+    public void startGame() {
+        createLevel();
+    }
+
+    public void createLevel() {
+        //map size formula from PDF
+        mapSize = (hero.getLevel() - 1) * 5 + 10 - (hero.getLevel() % 2);
+        mapDoodads = new ADoodad[mapSize][mapSize];
+
+        //TODO balance mapXP
+        mapXp = hero.getLevel() * 2000;
+
+        //populate map with monsters
+        //TODO monsterfactory
+        AMonster aMonster = new Goblin(1, 3, 3, 0);
+        //TODO populate map with monsters
+        mapDoodads[3][3] = aMonster;
+
+        //setup hero on the map
+        hero.setPosition(mapSize/2, mapSize / 2);
+        mapDoodads[hero.getCoordX()][hero.getCoordY()] = hero;
+
+        System.out.println("You venture further into the darkness...\n");
+        endTurn();
     }
 
     //main combat logic
@@ -112,7 +142,7 @@ public class Game {
         gameState = GameState.Loading;
 
         if (doFight){
-            if(!combatSimulate((AMonster)elem, true)) {
+            if(!combatSimulate((AMonster) aDoodad, true)) {
                 heroDeath();
                 return;
             }
@@ -124,6 +154,38 @@ public class Game {
         else {
 
         }
+    }
+
+    private void moveHero(String direction) {
+//        in case hero flees
+        preCombatX = hero.getCoordX();
+        preCombatY = hero.getCoordY();
+
+        hero.beginMove(direction);
+//        check for event on current coordinates
+        aDoodad = mapDoodads[hero.getCoordX()][hero.getCoordY()];
+        if (aDoodad !=null){
+            if (aDoodad instanceof AMonster) {
+                System.out.println("A " + aDoodad.getName() + "blocks your path!");
+                //System.out.println("It's seems to be " + ((AMonster)aDoodad).getLevel());
+                gameState = GameState.WaitChoiceCombat;
+                // TODO instance.showFightCombat
+            }
+        }
+    }
+
+
+    private void endTurn() {
+        if (didFight) {
+            //TODO refresh hero
+            //instance.refreshHero();
+        }
+        didFight = false;
+
+        gameState = GameState.WaitChoiceMap;
+
+        instance.refreshMap(mapDoodads);
+        instance.startMapChoice();
     }
 
     //what happens on hero death

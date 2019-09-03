@@ -1,5 +1,6 @@
 package model;
 
+import controller.Game;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -97,10 +98,26 @@ public abstract class ACharacter extends ADoodad {
         return (r.nextInt(20) + 1);
     }
 
+//    moving on the map
+    public void beginMove(String direction) {
+        if (direction.equals(Game.NORTH))
+            coordY--;
+        else if (direction.equals(Game.EAST))
+            coordX++;
+        else if (direction.equals(Game.SOUTH))
+            coordY++;
+        else if (direction.equals(Game.WEST))
+            coordX--;
+        else {
+            System.out.println("INVALID DIRECTION");
+        }
+    }
+
     public void setPosition(int coordX, int coordY) {
         this.coordX = coordX;
         this.coordY = coordY;
     }
+
 
     public void fullHeal() {
         hp = maxHp;

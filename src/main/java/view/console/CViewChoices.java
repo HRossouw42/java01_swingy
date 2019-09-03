@@ -3,6 +3,7 @@ package view.console;
 import controller.Game;
 import controller.Instance;
 import lombok.Getter;
+import model.heroes.AHero;
 
 public class CViewChoices extends Thread{
 
@@ -153,7 +154,7 @@ public class CViewChoices extends Thread{
         System.out.println("---");
     }
 
-    public void dispose() {
+    public void dump() {
         choiceThread.interrupt();
         if(!inputConsole){
             System.out.println("0");
@@ -161,6 +162,54 @@ public class CViewChoices extends Thread{
         System.out.println("---");
     }
     // ---------------------------- \\
+
+    // ~ Hero creation functions ~
+
+    public void refreshSelection(String [] combinedLabels, boolean createNewHero, AHero hero) {
+        selectionLabels = combinedLabels;
+        this.createNewHero = createNewHero;
+
+        if (!inputConsole){
+            System.out.println("0");
+        }
+        System.out.println();
+        if (createNewHero) {
+            System.out.println("Create a New Hero");
+        }
+        else {
+            System.out.println("Load a Saved Hero");
+        }
+        needConfirm = false;
+        printLegend();
+        awaitInput = true;
+        inputConsole = false;
+    }
+
+    public void refreshHeroSelection(int index, AHero hero){
+        if (needConfirm) {
+            System.out.println();
+            needConfirm = false;
+            printLegend();
+        }
+        if (!inputConsole)
+            System.out.println(index + 1);
+        System.out.println();
+        System.out.println("You've selected:");
+        CViewHero cViewHero = new CViewHero(hero);
+        if (createNewHero){
+            System.out.println("Class description: \n" + hero.getClassDescription() + "\n");
+        }
+
+        needConfirm = true;
+        printLegend();
+        awaitInput = true;
+        inputConsole = false;
+    }
+
+    public void printError(String error) {
+        if (needConfirm)
+            System.out.println(error);
+    }
 
 
 }
