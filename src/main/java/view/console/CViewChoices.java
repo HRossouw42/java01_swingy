@@ -211,5 +211,16 @@ public class CViewChoices extends Thread{
             System.out.println(error);
     }
 
+    // ~~ input functions ~~ \\
+
+    public boolean redirectInput(String input){
+        if (awaitInput || input == null )
+            return false;
+
+        inputConsole = true;
+
+
+        return true;
+    }
 
 }

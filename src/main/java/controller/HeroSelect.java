@@ -49,6 +49,7 @@ public class HeroSelect {
             //TODO get saved heroes
             System.out.println("Saved heroes here:");
         }
+        
 
         return true;
     }
@@ -91,6 +92,7 @@ public class HeroSelect {
     }
 
     public void continueHeroSelect() {
+        System.out.println("CONTINUE HERO SELECT");
         createNewHero = !createNewHero; //reset
         tempIndex = index;
         index = 0;
