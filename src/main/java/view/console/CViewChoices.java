@@ -4,13 +4,19 @@ import controller.Game;
 import controller.Instance;
 import lombok.Getter;
 import model.heroes.AHero;
+import view.UserInputThread;
 
-public class CViewChoices extends Thread{
+public class CViewChoices extends Thread {
 
     //instance
     Instance instance = Instance.getInstance();
 
-    @Getter boolean awaitInput = false;
+    @Getter
+    boolean awaitInput = false;
+    public boolean isAwaitInput() {
+        return awaitInput;
+    }
+
     boolean inputConsole = true;
 
     boolean selectHero = true;
@@ -19,49 +25,48 @@ public class CViewChoices extends Thread{
     boolean canToggle = false;
     String[] selectionLabels = null;
 
-//     to support concurrent programming -> Threads
+
+    //     to support concurrent programming -> Threads
 //     A thread is a thread of execution in a program.
 //     The Java Virtual Machine allows an application to have multiple threads of execution running concurrently.
 //     in this case we can run the choicepanel concurrently with other functions
-    Thread choiceThread = null;
+    Thread inputThread = null;
 
     CViewChoices() {
-        //TODO Make thread
-        //choiceThread = new Thread(new ChoiceRunnable(this));
-        //choiceThread.start();
+        System.out.println("Start thread with CVIEWCHOICES");
+        inputThread = new Thread(new UserInputThread(this)); //class -> UserInputThread(CViewChoices cViewChoices)
+        inputThread.start();
+        System.out.println("End thread with CVIEWCHOICES");
     }
 
     //printing function
     public void printLegend() {
         String string = "";
 
-        if (selectHero){
+        if (selectHero) {
             if (needConfirm) {
                 string = "Type ";
                 string += (createNewHero) ? "your name, hero" : "anything";
-                string +=" to confirm, empty line to change";
-            }
-            else {
+                string += " to confirm, empty line to change";
+            } else {
                 for (int i = 0; i < selectionLabels.length; i++) {
-//                    if (i != 0) {
-//                        string += ", ";
-//                    }
+                    if (i != 0) {
+                        string += ", ";
+                    }
                     string += (i + 1) + " for '" + selectionLabels[i] + "'";
                 }
 
-                if (!createNewHero){
-                    string +=", 0 to Create New Hero";
-                }
-                else if (canToggle){
-                    string +=", 0 to Load a Saved Hero";
+                if (!createNewHero) {
+                    string += ", 0 to Create New Hero";
+                } else if (canToggle) {
+                    string += ", 0 to Load a Saved Hero";
                 }
             }
-        }
-        else if (instance.getGame() != null) {
+        } else if (instance.getGame() != null) {
             switch (instance.getGame().getGameState()) {
                 case WaitChoiceMap:
                     string = "Move: ";
-                    for (int i = 0; i < Game.directionsArray.length; i++){
+                    for (int i = 0; i < Game.directionsArray.length; i++) {
 //                        if (i != 0){
 //                            string +=", ";
 //                        }
@@ -85,7 +90,7 @@ public class CViewChoices extends Thread{
             }
         }
 
-        if(!string.equals("")){
+        if (!string.equals("")) {
             System.out.println(string);
         }
 
@@ -106,7 +111,7 @@ public class CViewChoices extends Thread{
 
     public void stopDirectionInput(int input) {
         awaitInput = false;
-        if (!inputConsole){
+        if (!inputConsole) {
             System.out.println(input + 1);
         }
         System.out.println("---");
@@ -120,7 +125,7 @@ public class CViewChoices extends Thread{
 
     public void stopFightInput(String input) {
         awaitInput = false;
-        if (!inputConsole){
+        if (!inputConsole) {
             System.out.println(input);
         }
         System.out.println("---");
@@ -134,7 +139,7 @@ public class CViewChoices extends Thread{
 
     public void stopItemInput(String input) {
         awaitInput = false;
-        if (!inputConsole){
+        if (!inputConsole) {
             System.out.println(input);
         }
         System.out.println("---");
@@ -146,17 +151,17 @@ public class CViewChoices extends Thread{
         inputConsole = false;
     }
 
-    public void stopDeathInput(String input) {
+    public void stopDeathInput() {
         awaitInput = false;
-        if (!inputConsole){
-            System.out.println(input);
+        if (!inputConsole) {
+            System.out.println();
         }
         System.out.println("---");
     }
 
     public void dump() {
-        choiceThread.interrupt();
-        if(!inputConsole){
+        inputThread.interrupt();
+        if (!inputConsole) {
             System.out.println("0");
         }
         System.out.println("---");
@@ -165,27 +170,27 @@ public class CViewChoices extends Thread{
 
     // ~ Hero creation functions ~
 
-    public void refreshSelection(String [] combinedLabels, boolean createNewHero, AHero hero) {
+    public void refreshSelection(String[] combinedLabels, boolean createNewHero, AHero hero, boolean continueHeroSelect) {
         selectionLabels = combinedLabels;
         this.createNewHero = createNewHero;
 
-        if (!inputConsole){
+        if (!inputConsole) {
             System.out.println("0");
         }
         System.out.println();
         if (createNewHero) {
             System.out.println("Create a New Hero");
-        }
-        else {
+        } else {
             System.out.println("Load a Saved Hero");
         }
         needConfirm = false;
+        this.canToggle = continueHeroSelect;
         printLegend();
         awaitInput = true;
         inputConsole = false;
     }
 
-    public void refreshHeroSelection(int index, AHero hero){
+    public void refreshHeroSelection(int index, AHero hero) {
         if (needConfirm) {
             System.out.println();
             needConfirm = false;
@@ -196,7 +201,7 @@ public class CViewChoices extends Thread{
         System.out.println();
         System.out.println("You've selected:");
         CViewHero cViewHero = new CViewHero(hero);
-        if (createNewHero){
+        if (createNewHero) {
             System.out.println("Class description: \n" + hero.getClassDescription() + "\n");
         }
 
@@ -213,14 +218,98 @@ public class CViewChoices extends Thread{
 
     // ~~ input functions ~~ \\
 
-    public boolean redirectInput(String input){
-        if (awaitInput || input == null )
+    //    redirects input to different methods in classes
+    public boolean redirectInput(String input) {
+        if (awaitInput || input == null) {
+            System.out.println("Not awaiting input or input null");
             return false;
+        }
 
+        System.out.println("Redirect input of: " + input); //TODO remove
         inputConsole = true;
 
+        if (selectHero) {
+            if (needConfirm) {
+                if (input.equals("")) {
+                    needConfirm = false;
+                    inputConsole = false;
+                    return false;
+                } else
+                    instance.getHeroSelect().confirmSelection(input);
+            } else {
+                if (input.equals("0"))
+                    instance.getHeroSelect().continueHeroSelect();
+                else {
+                    System.out.println("CHANGE SELECTED ANSWER METHOD");
+                }
+            }
+        } else {
+//            redirect input depending on game state
+            System.out.println(instance.getGame().getGameState().toString()); //TODO remove
+            switch (instance.getGame().getGameState()) {
+                case WaitChoiceCombat:
+                case WaitChoiceItem:
+                    //TODO Item input redirect
+                case Dead:
+                    if (input.equals("2"))
+                        instance.gameOver();
+                    else
+                        instance.restartGame();
+                    System.out.println("Input invalid! Please input a number between '1' and '2'");
+                    return false;
+                case WaitChoiceMap:
+                    if (input.equals("0"))
+                        instance.gameOver();
+                    else
+                        instance.getGame().directionInput(Integer.parseInt(input) - 1);
+                    break;
 
+                default:
+                    return false;
+            }
+        }
         return true;
+    }
+
+    public boolean validateInput(String input) {
+        if (!awaitInput || input == null) {
+            return false;
+        }
+
+        if (selectHero) {
+            if (needConfirm) {
+                return true;
+            } else {
+                if (!canToggle && input.equals("0")) {
+                    System.out.println("Input invalid! Please input a number between '1' and '" + selectionLabels.length + "'");
+                    return false;
+                }
+                for (int i = 0; i <= selectionLabels.length; i++) {
+                    if (input.equals(i + ""))
+                        return true;
+                }
+            }
+            System.out.println("Input invalid! Please input a number between '1' and '" + selectionLabels.length + "'");
+            return false;
+        } else {
+//           Input validation based on game state ->
+            switch (instance.getGame().getGameState()) {
+                case WaitChoiceCombat:
+                case WaitChoiceItem:
+                case Dead:
+                    if (input.equals("1") || input.equals("2"))
+                        return true;
+                    System.out.println("Input invalid! Please input a number between '1' and '2'");
+                    return false;
+                case WaitChoiceMap:
+                    //TODO dynamically check directions array
+                    if (input.equals("0") || input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4"))
+                        return true;
+                    System.out.println("Input invalid! Please input a number between '1' and '4'");
+                default:
+                    return false;
+            }
+        }
     }
 
 }

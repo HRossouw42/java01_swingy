@@ -88,7 +88,8 @@ public class Game {
         endTurn();
     }
 
-    //main combat logic
+//    ~~~~~~~~~~~~~~~~
+//    main combat logic
     public boolean combatSimulate(AMonster monster, boolean heroStarts){
         didFight = true;
         System.out.println("A " + monster.getName() + " blocks your path!");
@@ -138,7 +139,7 @@ public class Game {
     public void combatChoice(boolean doFight) {
         if (gameState != GameState.WaitChoiceCombat)
             return;
-        //TODO fight choices
+        instance.stopCombatChoice(didFight ? "1" : "2");
         gameState = GameState.Loading;
 
         if (doFight){
@@ -152,10 +153,30 @@ public class Game {
             }
         }
         else {
+            //running away
+            int runAwayChance = 4; //TODO work out runaway chance
+            if (instance.random.nextInt(runAwayChance) == 0){
+                System.out.println("You failed to run away!");
+                if(!combatSimulate((AMonster) aDoodad, false)){ //combat but monster attacks first
+                    heroDeath();
+                    return;
+                }
+                else {
+                monstersList.remove((AMonster)aDoodad);
+                System.out.println("Removed " + (AMonster)aDoodad);
+            }
+            }
+            else {
+                System.out.println("You live to fight another day!\n");
+                hero.setPosition(preCombatX, preCombatY);
+            }
 
         }
+        refreshMapAfterMove(hero);
     }
 
+//    ~~~~~~~~~~~~~~~~
+//    Movement methods
     private void moveHero(String direction) {
 //        in case hero flees
         preCombatX = hero.getCoordX();
@@ -169,9 +190,39 @@ public class Game {
                 System.out.println("A " + aDoodad.getName() + "blocks your path!");
                 //System.out.println("It's seems to be " + ((AMonster)aDoodad).getLevel());
                 gameState = GameState.WaitChoiceCombat;
-                // TODO instance.showFightCombat
+                instance.startCombatChoice();
+                return;
             }
         }
+        refreshMapAfterMove(hero);
+    }
+
+    public void directionInput(int input){
+        if (gameState != GameState.WaitChoiceMap)
+            return;
+        gameState = GameState.Loading;
+        instance.stopMapChoice(input);
+        String direction = directionsArray[input];
+
+        //TODO add level finish detection here
+        if (direction.equals(NORTH)){
+            moveHero(direction);
+        }
+        else if (direction.equals(EAST)){
+            moveHero(direction);
+        }
+        else if (direction.equals(WEST)){
+            moveHero(direction);
+        }
+        else {
+            //SOUTH
+            moveHero(direction);
+        }
+    }
+
+    public void refreshMapAfterMove(ACharacter character){
+        mapDoodads[preCombatX][preCombatY] = null; //reset temp
+        mapDoodads[character.getCoordX()][character.getCoordY()] = character;
     }
 
 
@@ -197,7 +248,7 @@ public class Game {
         System.out.println("~~~~~");
 
         hero.fullHeal();
-        //TODO go to death screen
+       instance.startDeathChoice();
 
     }
 }

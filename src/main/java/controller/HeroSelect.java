@@ -5,18 +5,20 @@ import model.heroes.Fighter;
 import view.console.CViewWindow;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class HeroSelect {
 
     //ArrayList(Collection<? extends E> c)
     //This constructor is used to create a list containing the elements of the specified collection.
     static ArrayList<Class<? extends AHero>> classList;
-    String[] classListLegend = null;
 
     static {
         classList = new ArrayList<Class<? extends AHero>>();
         classList.add(Fighter.class);
     }
+
+    String[] classListLegend = null;
     Instance instance = Instance.getInstance();
     AHero hero = null;
     //TODO list of saved heroes
@@ -34,31 +36,32 @@ public class HeroSelect {
         this.cViewWindow = cViewWindow;
     }
 
-    private boolean createHero(String name){
+    private boolean createHero(String name) {
         if (createNewHero) {
             try {
                 //TODO move to array with hero classes
-                hero = new Fighter(name, 1);
+//                hero = new Fighter(name, 1);
+                hero = classList.get(index).getConstructor(String.class, int.class).newInstance(name, 1);
+                System.out.println("Create new hero ->" + hero);
                 System.out.println(hero.getName());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println(e);
             }
-        }
-        else {
+        } else {
             //TODO get saved heroes
             System.out.println("Saved heroes here:");
         }
-        
+
 
         return true;
     }
 
-    public void confirmSelection(String name){
-        if (!createHero(name)){
+    public void confirmSelection(String name) {
+        if (!createHero(name)) {
             return;
         }
-
+//        hero = new Fighter("Testman", 1);
+        System.out.println("CONFIRM SELECTION");
         if (cViewWindow != null) {
             System.out.println("\nJourney downwards mighty " + name + "!");
         }
@@ -72,27 +75,27 @@ public class HeroSelect {
 
         try {
             hero = classList.get(index).getConstructor(String.class, int.class).newInstance(classList.get(index).getSimpleName(), 1);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e);
         }
+//        lists all available classes
         classListLegend = new String[classList.size()];
         for (int i = 0; i < classListLegend.length; i++) {
-            classListLegend[i] = classList.get(i).getName();
+            classListLegend[i] = classList.get(i).getSimpleName();
         }
+        //TODO show saved heroes here in a legend
 
         if (cViewWindow != null) {
             cViewWindow.startChoiceWindow();
-
-            System.out.println("Show choice window plox");
         }
 
-        //createNewHero = true;
+        createNewHero = true;
         continueHeroSelect();
     }
 
     public void continueHeroSelect() {
-        System.out.println("CONTINUE HERO SELECT");
+//        if (createNewHero)
+//            return;
         createNewHero = !createNewHero; //reset
         tempIndex = index;
         index = 0;
@@ -106,9 +109,14 @@ public class HeroSelect {
         final String[] combinedLabels = classListLegend;
         final boolean isCreateNewHero = createNewHero;
         final AHero selectedHero = hero;
+        final boolean continueHeroSelect = true;
 
-        if (cViewWindow != null){
-            cViewWindow.cViewChoices.refreshSelection(combinedLabels, createNewHero, hero);
+        if (cViewWindow != null) {
+            System.out.println(Arrays.toString(combinedLabels));
+            System.out.println(createNewHero);
+            System.out.println(hero);
+            System.out.println(continueHeroSelect);
+            cViewWindow.cViewChoices.refreshSelection(combinedLabels, createNewHero, hero, continueHeroSelect);
 
         }
     }

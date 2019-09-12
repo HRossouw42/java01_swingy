@@ -29,8 +29,15 @@ public class Instance {
     public Random random = new Random();
 
     //other controllers
-    @Getter private HeroSelect heroSelect = null;
-    @Getter private Game game = null;
+    @Getter
+    private HeroSelect heroSelect = null;
+
+    public HeroSelect getHeroSelect() {
+        return heroSelect;
+    }
+
+    @Getter
+    private Game game = null;
 
     public Game getGame() {
         return game;
@@ -42,6 +49,7 @@ public class Instance {
 
     private Instance() {
     }
+
 
 
     public void setupInstance(final String [] args) {
@@ -76,11 +84,8 @@ public class Instance {
 
     private void uiChoiceReady(){
         uiToLoad--;
-        System.out.println("UI left to load = " + uiToLoad);
         if (uiToLoad == 0) {
             heroSelect = new HeroSelect(cViewWindow);
-//        TODO load select screen
-            System.out.println("TODO LOAD SELECT SCREEN");
             heroSelect.startHeroSelect();
         }
     }
@@ -101,9 +106,9 @@ public class Instance {
             cViewWindow.cViewChoices.startDeathInput();
     }
 
-    public void restartGame(String input) {
+    public void restartGame() {
         if (cViewWindow != null)
-            cViewWindow.cViewChoices.stopDeathInput(input);
+            cViewWindow.cViewChoices.stopDeathInput();
         System.out.println("RESTARTING");
         game.startGame();
     }
