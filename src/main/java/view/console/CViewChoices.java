@@ -227,7 +227,7 @@ public class CViewChoices extends Thread {
 
         System.out.println("Redirect input of: " + input); //TODO remove
         inputConsole = true;
-
+        System.out.println(selectHero + "SELECT HERO"); //TODO remove
         if (selectHero) {
             if (needConfirm) {
                 if (input.equals("")) {
@@ -240,7 +240,7 @@ public class CViewChoices extends Thread {
                 if (input.equals("0"))
                     instance.getHeroSelect().continueHeroSelect();
                 else {
-                    System.out.println("CHANGE SELECTED ANSWER METHOD");
+                    instance.getHeroSelect().changeSelection(Integer.parseInt(input) - 1);
                 }
             }
         } else {

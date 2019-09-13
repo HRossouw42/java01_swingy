@@ -7,7 +7,7 @@ public class CViewWindow {
     public CViewMain cViewMain = null;
     public CViewChoices cViewChoices = null;
 
-    public void CViewMain () {
+    public CViewWindow () {
         System.out.println("Starting Swingy \n");
     }
 

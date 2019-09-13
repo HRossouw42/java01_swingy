@@ -47,7 +47,7 @@ public class Instance {
     CViewWindow cViewWindow = null;
     boolean onlyConsole = false;
 
-    private Instance() {
+    public Instance() {
     }
 
 

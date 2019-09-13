@@ -28,7 +28,7 @@ public class UserInputThread implements Runnable {
 //                    will continually run until valid input detected
                 do {
                     while (!cViewChoices.isAwaitInput()){
-                        Thread.sleep(100);
+                        Thread.sleep(1000);
                     }
 
                     if (firstRun)
