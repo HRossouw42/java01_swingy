@@ -24,6 +24,7 @@ public class CViewChoices extends Thread {
     boolean needConfirm = false;
     boolean canToggle = false;
     String[] selectionLabels = null;
+    boolean firstRun = true;
 
 
     //     to support concurrent programming -> Threads
@@ -33,10 +34,8 @@ public class CViewChoices extends Thread {
     Thread inputThread = null;
 
     CViewChoices() {
-        System.out.println("Start thread with CVIEWCHOICES");
         inputThread = new Thread(new UserInputThread(this)); //class -> UserInputThread(CViewChoices cViewChoices)
         inputThread.start();
-        System.out.println("End thread with CVIEWCHOICES");
     }
 
     //printing function
@@ -170,9 +169,16 @@ public class CViewChoices extends Thread {
 
     // ~ Hero creation functions ~
 
-    public void refreshSelection(String[] combinedLabels, boolean createNewHero, AHero hero, boolean continueHeroSelect) {
+    public void refreshSelection(String[] combinedLabels, boolean createNewHero, AHero hero, boolean canToggle) {
+        if (firstRun){
+            createNewHero = true;
+            firstRun = false;
+        }
+        System.out.println(createNewHero);
         selectionLabels = combinedLabels;
         this.createNewHero = createNewHero;
+        System.out.println("OOOO");
+
 
         if (!inputConsole) {
             System.out.println("0");
@@ -184,9 +190,9 @@ public class CViewChoices extends Thread {
             System.out.println("Load a Saved Hero");
         }
         needConfirm = false;
-        this.canToggle = continueHeroSelect;
+        this.canToggle = canToggle;
         printLegend();
-        awaitInput = true;
+        awaitInput = true; //TODO
         inputConsole = false;
     }
 
@@ -220,7 +226,7 @@ public class CViewChoices extends Thread {
 
     //    redirects input to different methods in classes
     public boolean redirectInput(String input) {
-        if (awaitInput || input == null) {
+        if (!awaitInput || input == null) {
             System.out.println("Not awaiting input or input null");
             return false;
         }

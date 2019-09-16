@@ -37,8 +37,8 @@ public class HeroSelect {
     }
 
     private boolean createHero(String name) {
-        createNewHero = true;
-        System.out.println("createNewHero:" + createNewHero);
+        //createNewHero = true;
+        //System.out.println("createNewHero:" + createNewHero);
         if (createNewHero) {
             try {
                 //TODO move to array with hero classes
@@ -103,7 +103,6 @@ public class HeroSelect {
         if (cViewWindow != null) {
             cViewWindow.startChoiceWindow();
         }
-
         createNewHero = true;
         continueHeroSelect();
     }
@@ -116,6 +115,7 @@ public class HeroSelect {
         index = 0;
         String name = (createNewHero) ? classListLegend[index] : "";
         if (!createHero(name)) {
+            System.out.println("ERROR REVERT");
             createNewHero = !createNewHero;
             index = tempIndex;
             return;
@@ -124,16 +124,13 @@ public class HeroSelect {
         final String[] combinedLabels = classListLegend;
 //        final boolean isCreateNewHero = createNewHero;
 //        final AHero selectedHero = hero;
-        final boolean continueHeroSelect = true;
+        final boolean canToggle = true;
 
         if (cViewWindow != null) {
 //            System.out.println(Arrays.toString(combinedLabels));
-//            System.out.println(createNewHero);
-//            System.out.println(hero);
+            System.out.println(createNewHero);
 //            System.out.println(continueHeroSelect);
-            cViewWindow.cViewChoices.refreshSelection(combinedLabels, createNewHero, hero, continueHeroSelect);
-            System.out.println("END");
-
+            cViewWindow.cViewChoices.refreshSelection(combinedLabels, createNewHero, hero, canToggle);
         }
     }
 

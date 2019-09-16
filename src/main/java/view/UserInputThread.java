@@ -5,7 +5,7 @@ import view.console.CViewChoices;
 import java.util.Scanner;
 
 //If you are not extending the Thread class,your class object would not be treated as a thread object.So you need to explicitely create Thread class object
-public class UserInputThread implements Runnable {
+public class UserInputThread implements Runnable{
     CViewChoices cViewChoices = null;
 
     //    https://alvinalexander.com/java/edu/pj/pj010005
@@ -27,27 +27,27 @@ public class UserInputThread implements Runnable {
             do {
 //                    will continually run until valid input detected
                 do {
-                    while (!cViewChoices.isAwaitInput()){
+                    while (!cViewChoices.isAwaitInput()) {
                         Thread.sleep(1000);
                     }
 
                     if (firstRun)
-                        firstRun = false; //prevents first print of choice panel cause the game isn't running yet
+                        firstRun = false; //prevents first print of choice panel print, so will only run if there's a non valid answer
                     else {
                         cViewChoices.printLegend();
-                        //System.out.println("Input command ->");
                     }
                     input = scanner.nextLine();
-                    System.out.println("Input of :" + input); //TODO remove
+//                    System.out.println("Input of :" + input); //TODO remove
                     if (Thread.currentThread().isInterrupted()) {
                         System.out.println("Input thread interrupted"); // TODO remove
                         return;
                     }
                 } while (!cViewChoices.validateInput(input));
+                System.out.println("Input valid!");
 
                 //if valid input found then redirect input
                 firstRun = cViewChoices.redirectInput(input);
-                //System.out.println(firstRun);
+                System.out.println("Was redirected:" + firstRun);
 
             } while (!Thread.currentThread().isInterrupted());
             System.out.println("Input thread interrupted"); //TODO remove

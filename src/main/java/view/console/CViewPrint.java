@@ -3,6 +3,7 @@ package view.console;
 public class CViewPrint {
 
     CViewPrint(){
+        System.out.println("CVIEWPRINT TODO");
 
     }
 
