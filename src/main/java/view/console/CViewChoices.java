@@ -45,7 +45,7 @@ public class CViewChoices extends Thread {
         if (selectHero) {
             if (needConfirm) {
                 string = "Type ";
-                string += (createNewHero) ? "your name, hero" : "anything";
+                string += (createNewHero) ? "your heroic name," : "anything";
                 string += " to confirm, empty line to change";
             } else {
                 for (int i = 0; i < selectionLabels.length; i++) {
